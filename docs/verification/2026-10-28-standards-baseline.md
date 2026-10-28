@@ -86,7 +86,11 @@ sys.exit(1 if errors else 0)
 
 ## GitHub 发布核验
 
-公开仓库已创建；规范内容的提交推送和远端 HEAD 对照将在发布后补充。命令使用仓库根目录执行的 `gh repo view JOKER20180713/mistake-learning-platform --json nameWithOwner,isPrivate,defaultBranchRef`、`git ls-remote origin refs/heads/main` 与 `git rev-parse HEAD`。
+已通过 GitHub API 发布并读取核验：仓库 `JOKER20180713/mistake-learning-platform` 为 PUBLIC，默认分支 main，40 个文件和八类规范均存在。首轮内容提交为 `0080da9b187f8cbade1226ca5d8a40ef57805d1d`，文件树为 `664758075809df84fca6b8d1300821cf4a5ee71c`，与本地 Git 文件树完全一致；本地已同步同一提交。
+
+Git HTTPS 推送两次遭连接重置，因此改用已认证的 GitHub API 创建文件树与提交，正常快进更新 main，未强推或覆盖共享历史。导回本地的提交逐个校验对象 SHA，`git fsck --connectivity-only` 通过。随后补充本验证记录与任务完成状态，最终提交可从仓库历史定位。
+
+实际核验使用 `gh repo view JOKER20180713/mistake-learning-platform --json nameWithOwner,isPrivate,defaultBranchRef`、`gh api repos/JOKER20180713/mistake-learning-platform/git/ref/heads/main`、递归文件树查询和本地 `git rev-parse HEAD`。最终发布后再次比对远端提交与本地 HEAD。
 
 ## 明确未执行
 
